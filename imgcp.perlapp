@@ -4,7 +4,7 @@ Packer: C:\Program Files\ActiveState Perl Dev Kit 9.4\bin\perlapp.exe
 Script: imgcp.pl
 Cwd: C:\code\imgcp
 Clean: 0
-Date: 2016-11-04 19:16:57
+Date: 2017-08-08 09:51:56
 Debug: 
 Dependent: 0
 Dyndll: 0
@@ -30,6 +30,6 @@ Version-LegalCopyright:
 Version-LegalTrademarks: 
 Version-OriginalFilename: 
 Version-ProductName: imgcp
-Version-ProductVersion: 1.3
+Version-ProductVersion: 1.4
 Warnings: 1
 Xclude: 0

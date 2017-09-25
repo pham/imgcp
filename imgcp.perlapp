@@ -12,7 +12,7 @@ Exe: imgcp.exe
 Force: 1
 Gui: 1
 Hostname: zebu
-Icon: Gear-32.ico
+Icon: g10.ico
 Lib: lib:C:\code\lib
 Manifest: 
 No-Compress: 0

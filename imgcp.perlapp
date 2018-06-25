@@ -1,10 +1,10 @@
-#!C:\Program Files\ActiveState Perl Dev Kit 9.4\bin\perlapp-gui.exe
+#!C:\Program Files\ActiveState Perl Dev Kit 9.5.1\bin\perlapp-gui.exe
 PAP-Version: 1.0
-Packer: C:\Program Files\ActiveState Perl Dev Kit 9.4\bin\perlapp.exe
+Packer: C:\Program Files\ActiveState Perl Dev Kit 9.5.1\bin\perlapp.exe
 Script: imgcp.pl
 Cwd: C:\code\imgcp
 Clean: 0
-Date: 2017-08-08 09:51:56
+Date: 2018-06-25 15:03:24
 Debug: 
 Dependent: 0
 Dyndll: 0
@@ -20,16 +20,17 @@ No-Logo: 0
 Runlib: 
 Shared: none
 Tmpdir: 
+Trim: JSON::PP58::
 Verbose: 0
 Version-Comments: 
-Version-CompanyName: 
+Version-CompanyName: Aquaron
 Version-FileDescription: 
 Version-FileVersion: 
 Version-InternalName: 
-Version-LegalCopyright: 
+Version-LegalCopyright: 2018
 Version-LegalTrademarks: 
 Version-OriginalFilename: 
 Version-ProductName: imgcp
-Version-ProductVersion: 1.4
+Version-ProductVersion: 1.5
 Warnings: 1
 Xclude: 0

@@ -9,19 +9,20 @@ use File::Path;
 use File::Copy;
 use Win32::DriveInfo;
 
-use constant PRODUCT    => 'imgcp v1.4';
+use constant PRODUCT    => 'imgcp v1.5';
 use constant FG         => '#EAEAEA';
 use constant BG         => '#4F6D7A';
 use constant HBG        => '#869CA5';
 use constant SPACEREQ   => 1024 * 1024 * 1024; #243419574272;
-use constant AUTOEX     => q{ind,inp,bin,bdm,cpi,dat,mpl,thm,pod,xml,bnp,int,txt,html,ctg};
+use constant AUTOEX     => q{ind,inp,bin,bdm,cpi,dat,mpl,thm,pod,xml,bnp,int,txt,html,ctg,url,sav};
 use constant HELP       => <<EOT;
 imgcp -source D: -target C:\/tmp -auto -ex tmp,ext
 
--source \x{2022} Dir of where files are
+-source \x{2022} Drive to copy from
 -target \x{2022} Where to copy files to
 -auto   \x{2022} Start copying immediately
 -ex     \x{2022} List of extensions to exclude
+-test   \x{2022} Test only, don't copy
 EOT
 use vars qw /$STATUS $BW $CL/;
 select((select(STDOUT), $|=1)[0]);
@@ -107,6 +108,16 @@ sub main {
     )->pack(qw/-anchor w -side top -padx 0/);
 }
 
+sub _newfilename {
+    my $fname   = $_[0];
+    my $itr     = 0;
+    do {
+        $itr++;
+        $fname =~ s/\.([^.]+)$/_$itr.$1/;
+    } while (-e $fname);
+    return $fname;
+}
+
 sub _cat {
     my $count   = new ReadDir($CL->{-source});
     my $t       = scalar $count->Get(-type => 'files');
@@ -123,17 +134,33 @@ sub _cat {
         ### check if a version of destination already exists
         foreach (@$destprev) {
             my $filepath    = $CL->{-target}.'/'.$_.'/'.$f;
-            return 0        if -s $filepath;
+            my $tar_size    = -s $filepath;
+            my $src_size    = -s "$src/$f";
+
+            ### check if dest file is same as source
+            if ($src_size == $tar_size) {
+                return 0;
+            } elsif (-e $filepath) {
+                ### collision, rename old file
+                $CL->{-test} and printf "DUP $filepath\n";
+                my $newf    = _newfilename($filepath);
+                rename ($filepath, $newf);
+            }
         }
 
         mkpath ($dest,0,0755) unless -d $dest;
 
         ### make sure we're not overwriting, it's inefficient
         unless (-s "$dest/$f") {
-            unless (copy ("$src/$f", "$dest/$f")) {
-                return -1;
+            if ($CL->{-test}) {
+                if (open my $touch, ">$dest/$f") {
+                    close $touch;
+                    return 1;
+                }
+            } elsif (copy ("$src/$f", "$dest/$f")) {
+                return 1;
             }
-            return 1;
+            return -1;
         }
         return 0;
     };
@@ -207,8 +234,11 @@ sub _get_target_dirs {
 sub _read_dirs {
     my ($dir,$funcf,$c,$t,$ext) = (@_);
 
+    $CL->{-test} and printf "$dir\n";
+
     if (opendir my $dh, $dir) {
-        my @objs    = grep !/^\./ && !/^\d{8}$/, readdir($dh);
+        #my @objs    = grep !/^\./ && !/^\d{8}$/, readdir($dh);
+        my @objs    = grep !/^\./, readdir($dh);
         closedir $dh;
 
         foreach my $obj (@objs) {

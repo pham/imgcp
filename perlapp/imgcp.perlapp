@@ -4,7 +4,7 @@ Packer: C:\Program Files\ActiveState Perl Dev Kit 9.5.1\bin\perlapp.exe
 Script: ..\imgcp.pl
 Cwd: D:\code\imgcp\perlapp
 Clean: 0
-Date: 2019-10-11 19:07:48
+Date: 2019-10-12 09:28:44
 Debug: 
 Dependent: 0
 Dyndll: 0

@@ -27,6 +27,8 @@ imgdedup -target C:\tmp
 ```
 
 # Usage
+Download the latest executables from https://github.com/pham/imgcp/releases.
+
 ## imgcp
 `imgcp.exe` organizes media files from memory card to HD into `YYYYMMDD` directories based on the files' creation dates.
 I made this program to simplify the process of find media files nested somewhere on a memory card and copy them to a *staging* folder according to their creation date on my local HD so that I can process them later.

@@ -1,15 +1,16 @@
 #!perl -w
 
+use lib qw(lib);
 use strict;
 use CmdLine;
 use Tk;
-use Ptk::BasicWindow;
+use BasicWindow;
 use ReadDir;
 use File::Path;
 use File::Copy;
 use Win32::DriveInfo;
 
-use constant PRODUCT    => 'imgcp v1.5';
+use constant PRODUCT    => 'imgcp v1.6';
 use constant FG         => '#EAEAEA';
 use constant BG         => '#4F6D7A';
 use constant HBG        => '#869CA5';
@@ -28,7 +29,7 @@ use vars qw /$STATUS $BW $CL/;
 select((select(STDOUT), $|=1)[0]);
 
 $CL     = CmdLine->new(@ARGV);
-$BW     = Ptk::BasicWindow->new(
+$BW     = BasicWindow->new(
     -fg         => FG,
     -bg         => BG,
     -hbg        => HBG,
@@ -59,9 +60,9 @@ sub main {
 
     $mw->bind('<Escape>' => sub { exit(0); });
 
-	if (!$CL->{-source} || !$CL->{-target}) {
+    if (!$CL->{-source} || !$CL->{-target}) {
         $STATUS     = HELP;
-	} elsif ($CL->{-tinfo}->{type} eq q{unknown} or $CL->{-tinfo}->{free} < SPACEREQ or $sizereq > 90) {
+    } elsif ($CL->{-tinfo}->{type} eq q{unknown} or $CL->{-tinfo}->{free} < SPACEREQ or $sizereq > 90) {
         $STATUS     = sprintf q{Destination (%s) is invalid or does not have enough storage space (%s)!},
                         $CL->{-target}, _space($CL->{-tinfo}->{free});
     } elsif (-d $CL->{-source} && -d $CL->{-target}) {
@@ -70,16 +71,16 @@ sub main {
             text    => \$mw->{buttonLabel},
             cb      => \&_cat,
             font    => q{Verdana 10},
-            width   => 20 
+            width   => 20
         })->pack(qw/-side top -anchor w/);
 
         $BW->progress($bottom);
         $STATUS     = sprintf qq{From %s %s %s (%s data)\nTo %s %s %s (%s free)\nStorage required: %d%%},
-                        $CL->{-source}, 
+                        $CL->{-source},
                         _space($CL->{-sinfo}->{total}),
                         $CL->{-sinfo}->{type},
                         _space($datasize),
-                        $CL->{-target}, 
+                        $CL->{-target},
                         _space($CL->{-tinfo}->{total}),
                         $CL->{-tinfo}->{type},
                         _space($CL->{-tinfo}->{free}),
@@ -122,7 +123,7 @@ sub _cat {
     my $count   = new ReadDir($CL->{-source});
     my $t       = scalar $count->Get(-type => 'files');
     my $c       = 0;
-    my $funcf   = sub { 
+    my $funcf   = sub {
         my $src             = shift;
         my $f               = shift;
         my $ctime           = (stat "$src/$f")[9];
@@ -197,15 +198,15 @@ sub _cat {
                         $goodbad{good}{label},
                         $goodbad{bad}{count},
                         lc $goodbad{bad}{label};
-    
+
     if ($c > 0 && $c == $goodbad{good}{count}) {
         $STATUS = qq{FINISHED: $c file(s) copied\n$info};
         $BW->{-progress} = 100;
     } elsif ($c > 0) {
-        $STATUS = sprintf qq{ERROR: %d/%d file(s) copied\n%s}, 
+        $STATUS = sprintf qq{ERROR: %d/%d file(s) copied\n%s},
             $c, $goodbad{good}{count}, $info;
     } elsif ($c < 0) {
-        $STATUS = sprintf qq{ERROR: No space left on device (needs > %s)\n%s}, 
+        $STATUS = sprintf qq{ERROR: No space left on device (needs > %s)\n%s},
             _space(SPACEREQ), $info;
     } else {
         $STATUS = sprintf qq{ERROR: Nothing copied out of %d file(s)!\n%s},
@@ -312,10 +313,10 @@ sub _drive_type {
     my ($total,$free)       = (Win32::DriveInfo::DriveSpace($drive))[5,6];
 
     if      (!$type)     { $type = q{unknown};   }
-    elsif   ($type == 2) { $type = q{removable}; } 
-    elsif   ($type == 3) { $type = q{fixed};     } 
-    elsif   ($type == 4) { $type = q{network};   } 
-    elsif   ($type == 5) { $type = q{cd-rom};    } 
+    elsif   ($type == 2) { $type = q{removable}; }
+    elsif   ($type == 3) { $type = q{fixed};     }
+    elsif   ($type == 4) { $type = q{network};   }
+    elsif   ($type == 5) { $type = q{cd-rom};    }
     elsif   ($type == 6) { $type = q{ram};       }
     else                 { $type = q{unknown};   }
 
@@ -327,4 +328,3 @@ sub _drive_type {
 }
 
 1;
-

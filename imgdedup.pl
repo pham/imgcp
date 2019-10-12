@@ -1,15 +1,16 @@
 #!perl -w
 
+use lib qw(lib);
 use strict;
 use CmdLine;
 use Tk;
-use Ptk::BasicWindow;
+use BasicWindow;
 use ReadDir;
 use File::Path;
 use File::Copy;
 use File::Spec;
 
-use constant PRODUCT    => 'imgdedup v1.0';
+use constant PRODUCT    => 'imgdedup v1.1';
 use constant FG         => '#EAEAEA';
 use constant BG         => '#4F6D7A';
 use constant HBG        => '#869CA5';
@@ -31,7 +32,7 @@ use vars qw /$STATUS $BW $CL/;
 select((select(STDOUT), $|=1)[0]);
 
 $CL     = CmdLine->new(@ARGV);
-$BW     = Ptk::BasicWindow->new(
+$BW     = BasicWindow->new(
     -fg         => FG,
     -bg         => BG,
     -hbg        => HBG,
@@ -59,7 +60,7 @@ sub main {
 
     $mw->bind('<Escape>' => sub { exit(0); });
 
-	if (!$CL->{-dir} || !$CL->{-target}) {
+    if (!$CL->{-dir} || !$CL->{-target}) {
         $STATUS     = HELP;
     } elsif ($CL->{-tcount} <= 0) {
         $STATUS     = qq{Target dir $CL->{-name} has no files};
@@ -69,7 +70,7 @@ sub main {
             text    => \$mw->{buttonLabel},
             cb      => \&_cat,
             font    => q{Verdana 10},
-            width   => 20 
+            width   => 20
         })->pack(qw/-side top -anchor w/);
 
         $BW->progress($bottom);
@@ -125,7 +126,7 @@ sub _cat {
     my $count   = new ReadDir($CL->{-dir});
     my $t       = scalar $count->Get(-type => 'files');
     my $c       = 0;
-    my $funcf   = sub { 
+    my $funcf   = sub {
         my $src             = shift;
         my $f               = shift;
 
@@ -164,7 +165,7 @@ sub _cat {
                         $goodbad{good},
                         $goodbad{bad},
                         $CL->{-unique};
-    
+
     if ($c > 0) {
         $STATUS = qq{FINISHED: $c out of $t files scanned\n$info};
         $BW->{-progress} = 100;
@@ -210,4 +211,3 @@ sub _read_dirs {
 }
 
 1;
-

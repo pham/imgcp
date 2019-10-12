@@ -1,0 +1,37 @@
+#!C:\Program Files\ActiveState Perl Dev Kit 9.5.1\bin\perlapp-gui.exe
+PAP-Version: 1.0
+Packer: C:\Program Files\ActiveState Perl Dev Kit 9.5.1\bin\perlapp.exe
+Script: ..\imgcp.pl
+Cwd: D:\code\imgcp\perlapp
+Clean: 0
+Date: 2019-10-11 19:07:48
+Debug: 
+Dependent: 0
+Dyndll: 0
+Exe: imgcp.exe
+Force: 1
+Gui: 1
+Hostname: zebu
+Icon: ..\icons\imgcp.ico
+Lib: lib:..\lib
+Manifest: 
+No-Compress: 0
+No-Logo: 0
+Runlib: 
+Shared: none
+Tmpdir: 
+Trim: JSON::PP58::
+Trim: File::Spec::Unix
+Verbose: 0
+Version-Comments: 
+Version-CompanyName: Aquaron
+Version-FileDescription: 
+Version-FileVersion: 
+Version-InternalName: 
+Version-LegalCopyright: 2019
+Version-LegalTrademarks: 
+Version-OriginalFilename: 
+Version-ProductName: imgcp
+Version-ProductVersion: 1.5
+Warnings: 1
+Xclude: 0

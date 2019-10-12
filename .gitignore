@@ -1,5 +1,5 @@
 *.exe
 *.swp
 registry\*
-icons\logo.*
-*.ico
+icons\logo.gif
+icons\logo.b64
